@@ -41,10 +41,10 @@ public class UIManager : MonoBehaviour
     }
 
     // ── Public API ────────────────────────────────────────────────────────────
-    public void LoadLevel(int lvlNum, int total)
+    public void LoadLevel(int lvlNum, int total, string hint)
     {
         levelLabel.text = $"Level {lvlNum} / {total}";
-        hintLabel.text  = $"Hint: {gm.CurrentLevel.hint}";
+        hintLabel.text  = $"Hint: {hint}";
         RefreshCommandQueue();
         HidePopups();
         SetButtonsInteractable(true);

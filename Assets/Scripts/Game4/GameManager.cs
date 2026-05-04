@@ -1,9 +1,10 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour
 {
-    // ── Level Data ───────────────────────────────────────────────────────────
+    // ── Level Data ────────────────────────────────────────────────────────────
     public struct LevelData
     {
         public int cols, rows;
@@ -13,25 +14,25 @@ public class GameManager : MonoBehaviour
         public string hint;
     }
 
-    static readonly LevelData[] Levels = new LevelData[]
+    static readonly LevelData[] Levels =
     {
-        // Level 1 – straight path
+        // Level 1 – straight path → Right x4
         new LevelData {
             cols = 5, rows = 5,
             playerStart = new Vector2Int(0, 2),
             starPos     = new Vector2Int(4, 2),
             obstacles   = new Vector2Int[0],
-            hint        = "Right × 4!"
+            hint        = "Go Right 4 times!"
         },
-        // Level 2 – L-shaped path
+        // Level 2 – L-shape → Right x4, Up x4
         new LevelData {
             cols = 5, rows = 5,
             playerStart = new Vector2Int(0, 4),
             starPos     = new Vector2Int(4, 0),
             obstacles   = new Vector2Int[0],
-            hint        = "Right × 4, Up × 4!"
+            hint        = "Right x4, then Up x4!"
         },
-        // Level 3 – obstacles
+        // Level 3 – obstacles → Up x2, Right x4
         new LevelData {
             cols = 5, rows = 5,
             playerStart = new Vector2Int(0, 2),
@@ -40,28 +41,26 @@ public class GameManager : MonoBehaviour
                 new Vector2Int(2, 2),
                 new Vector2Int(3, 1)
             },
-            hint = "Up × 2, Right × 4!"
+            hint = "Up x2, then Right x4!"
         }
     };
 
-    // ── References set by Bootstrap ─────────────────────────────────────────
+    // ── References (set by Bootstrap) ─────────────────────────────────────────
     [HideInInspector] public PlayerMover  playerMover;
     [HideInInspector] public CommandQueue commandQueue;
     [HideInInspector] public UIManager    uiManager;
     [HideInInspector] public GridBuilder  gridBuilder;
 
-    // ── State ────────────────────────────────────────────────────────────────
-    int currentLevel = 0;
-    GameState state  = GameState.Editing;
+    // ── State ─────────────────────────────────────────────────────────────────
+    int       currentLevel = 0;
+    GameState state        = GameState.Editing;
 
     public LevelData CurrentLevel => Levels[currentLevel];
-    public int LevelNumber         => currentLevel + 1;
-    public int TotalLevels         => Levels.Length;
 
     // ── Public API ────────────────────────────────────────────────────────────
     public void StartGame()    => LoadLevel(0);
     public void RestartLevel() => LoadLevel(currentLevel);
-    public void NextLevel()    => LoadLevel(currentLevel + 1);
+    public void NextLevel()    => LoadLevel(Mathf.Min(currentLevel + 1, Levels.Length - 1));
 
     public void AddCommand(Direction dir)
     {
@@ -84,52 +83,57 @@ public class GameManager : MonoBehaviour
         StartCoroutine(ExecuteCommands());
     }
 
-    // ── Internal ──────────────────────────────────────────────────────────────
+    // ── Level load ────────────────────────────────────────────────────────────
     void LoadLevel(int index)
     {
+        StopAllCoroutines();                       // cancel any in-flight execution
         currentLevel = Mathf.Clamp(index, 0, Levels.Length - 1);
         state = GameState.Editing;
 
         var lvl = Levels[currentLevel];
         gridBuilder.BuildGrid(lvl);
-        playerMover.Setup(lvl.playerStart, lvl.cols, lvl.rows,
-                          gridBuilder.CellSize, gridBuilder.GridOrigin,
-                          lvl.obstacles, lvl.starPos);
+
+        playerMover.Setup(
+            lvl.playerStart, lvl.cols, lvl.rows,
+            gridBuilder.CellSize, gridBuilder.GridOrigin,
+            lvl.obstacles, lvl.starPos);
+
         commandQueue.Clear();
-        uiManager.LoadLevel(currentLevel + 1, Levels.Length);
+        uiManager.LoadLevel(currentLevel + 1, Levels.Length, lvl.hint);
     }
 
+    // ── Command execution coroutine ───────────────────────────────────────────
     IEnumerator ExecuteCommands()
     {
         state = GameState.Running;
         uiManager.SetButtonsInteractable(false);
 
-        foreach (var dir in commandQueue.Commands)
+        // Snapshot the list so it can't change under us
+        var cmds = new List<Direction>(commandQueue.Commands);
+
+        foreach (var dir in cmds)
         {
-            MoveResult result = MoveResult.Success;
-            bool done = false;
-            StartCoroutine(playerMover.MoveStep(dir, r => { result = r; done = true; }));
+            // ExecuteMove runs on PlayerMover — yield return waits for it to finish
+            yield return playerMover.ExecuteMove(dir);
 
-            yield return new WaitUntil(() => done);
-            yield return new WaitForSeconds(0.12f);
+            yield return new WaitForSeconds(0.1f);   // brief pause between steps
 
-            if (result == MoveResult.ReachedStar)
+            switch (playerMover.LastResult)
             {
-                state = GameState.Won;
-                bool hasNext = currentLevel + 1 < Levels.Length;
-                uiManager.ShowWin(hasNext);
-                yield break;
-            }
+                case MoveResult.ReachedStar:
+                    state = GameState.Won;
+                    uiManager.ShowWin(currentLevel + 1 < Levels.Length);
+                    yield break;
 
-            if (result == MoveResult.HitObstacle || result == MoveResult.OutOfBounds)
-            {
-                state = GameState.Failed;
-                uiManager.ShowRetry();
-                yield break;
+                case MoveResult.HitObstacle:
+                case MoveResult.OutOfBounds:
+                    state = GameState.Failed;
+                    uiManager.ShowRetry();
+                    yield break;
             }
         }
 
-        // Commands exhausted without reaching star
+        // Ran all commands without reaching the star
         state = GameState.Failed;
         uiManager.ShowRetry();
     }

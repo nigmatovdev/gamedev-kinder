@@ -6,6 +6,10 @@ public class PlayerMover : MonoBehaviour
 {
     public float moveSpeed = 4f;
 
+    // ── Shared result written by MoveStep, read by GameManager ───────────────
+    [NonSerialized] public MoveResult LastResult = MoveResult.Success;
+    [NonSerialized] public bool       Moving     = false;
+
     Vector2Int gridPos;
     int cols, rows;
     float cellSize;
@@ -14,6 +18,7 @@ public class PlayerMover : MonoBehaviour
     Vector2Int starPos;
     Vector2Int startPos;
 
+    // ── Setup ─────────────────────────────────────────────────────────────────
     public void Setup(Vector2Int start, int cols, int rows, float cellSize,
                       Vector3 gridOrigin, Vector2Int[] obstacles, Vector2Int starPos)
     {
@@ -30,12 +35,22 @@ public class PlayerMover : MonoBehaviour
 
     public void ResetToStart()
     {
+        StopAllCoroutines();
+        Moving  = false;
         gridPos = startPos;
         transform.position = GridToWorld(startPos);
     }
 
-    public IEnumerator MoveStep(Direction dir, Action<MoveResult> callback)
+    // ── Public entry: GameManager yields on the returned Coroutine ────────────
+    //   LastResult is set before the Coroutine finishes.
+    public Coroutine ExecuteMove(Direction dir)
+        => StartCoroutine(MoveStep(dir));
+
+    // ── Core move coroutine (runs on PlayerMover's scheduler) ─────────────────
+    IEnumerator MoveStep(Direction dir)
     {
+        Moving = true;
+
         Vector2Int next = gridPos;
         switch (dir)
         {
@@ -45,36 +60,44 @@ public class PlayerMover : MonoBehaviour
             case Direction.Right: next.x++; break;
         }
 
+        // Out of bounds
         if (next.x < 0 || next.x >= cols || next.y < 0 || next.y >= rows)
         {
-            yield return BounceAnim(next);
-            callback(MoveResult.OutOfBounds);
+            yield return StartCoroutine(BounceAnim(next));
+            LastResult = MoveResult.OutOfBounds;
+            Moving = false;
             yield break;
         }
 
+        // Obstacle
         foreach (var obs in obstacles)
         {
             if (obs == next)
             {
-                yield return BounceAnim(next);
-                callback(MoveResult.HitObstacle);
+                yield return StartCoroutine(BounceAnim(next));
+                LastResult = MoveResult.HitObstacle;
+                Moving = false;
                 yield break;
             }
         }
 
-        yield return SmoothMove(GridToWorld(next));
+        // Valid move
+        yield return StartCoroutine(SmoothMove(GridToWorld(next)));
         gridPos = next;
 
-        callback(gridPos == starPos ? MoveResult.ReachedStar : MoveResult.Success);
+        LastResult = (gridPos == starPos) ? MoveResult.ReachedStar : MoveResult.Success;
+        Moving = false;
     }
 
+    // ── Animation helpers ─────────────────────────────────────────────────────
     IEnumerator SmoothMove(Vector3 target)
     {
-        Vector3 from = transform.position;
-        float duration = 1f / moveSpeed;
+        Vector3 from     = transform.position;
+        float   duration = 1f / moveSpeed;
         for (float t = 0; t < duration; t += Time.deltaTime)
         {
-            transform.position = Vector3.Lerp(from, target, Mathf.SmoothStep(0, 1, t / duration));
+            float pct = Mathf.SmoothStep(0f, 1f, t / duration);
+            transform.position = Vector3.Lerp(from, target, pct);
             yield return null;
         }
         transform.position = target;
@@ -83,8 +106,8 @@ public class PlayerMover : MonoBehaviour
     IEnumerator BounceAnim(Vector2Int toward)
     {
         Vector3 from   = transform.position;
-        Vector3 midway = Vector3.Lerp(from, GridToWorld(toward), 0.3f);
-        float dur = 0.15f;
+        Vector3 midway = Vector3.Lerp(from, GridToWorld(toward), 0.28f);
+        float   dur    = 0.12f;
 
         for (float t = 0; t < dur; t += Time.deltaTime)
         {
@@ -99,6 +122,7 @@ public class PlayerMover : MonoBehaviour
         transform.position = from;
     }
 
-    public Vector3 GridToWorld(Vector2Int pos) =>
-        gridOrigin + new Vector3(pos.x * cellSize, -pos.y * cellSize, 0f);
+    // ── Utility ───────────────────────────────────────────────────────────────
+    public Vector3 GridToWorld(Vector2Int pos)
+        => gridOrigin + new Vector3(pos.x * cellSize, -pos.y * cellSize, 0f);
 }
