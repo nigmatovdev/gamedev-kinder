@@ -124,7 +124,7 @@ public class UIManager : MonoBehaviour
             Vector2.zero, new Vector2(0, 110),
             new Color(0.13f, 0.55f, 0.82f));
 
-        var titleTMP = MakeText(titleBar.transform, "Title", "Code the Path 🗺️",
+        var titleTMP = MakeText(titleBar.transform, "Title", "Code the Path",
             new Vector2(0.1f, 0), new Vector2(0.7f, 1), 52, FontStyles.Bold, Color.white);
 
         levelLabel = MakeText(titleBar.transform, "LevelLabel", "Level 1 / 3",
@@ -198,7 +198,7 @@ public class UIManager : MonoBehaviour
             new Color(0.95f, 0.56f, 0.10f), // Left
             new Color(0.90f, 0.20f, 0.50f)  // Right
         };
-        string[] labels = { "▲", "▼", "◄", "►" };
+        string[] labels = { "UP", "DOWN", "LEFT", "RIGHT" };
 
         for (int i = 0; i < 4; i++)
         {
@@ -226,36 +226,36 @@ public class UIManager : MonoBehaviour
         actionHLayout.childForceExpandWidth  = false;
         actionHLayout.childForceExpandHeight = false;
 
-        runBtn = MakeButton(actionRow.transform, "▶  RUN",
+        runBtn = MakeButton(actionRow.transform, "RUN",
             new Color(0.10f, 0.75f, 0.35f), new Vector2(220, 90));
         runBtn.onClick.AddListener(() => gm.RunCommands());
         GetTMP(runBtn).fontSize = 38;
         actionButtons.Add(runBtn);
 
-        clearBtn = MakeButton(actionRow.transform, "✕  CLEAR",
+        clearBtn = MakeButton(actionRow.transform, "CLEAR",
             new Color(0.80f, 0.22f, 0.22f), new Vector2(220, 90));
         clearBtn.onClick.AddListener(() => gm.ClearCommands());
         GetTMP(clearBtn).fontSize = 34;
         actionButtons.Add(clearBtn);
 
         // Back to menu button
-        var menuBtn = MakeButton(actionRow.transform, "🏠",
-            new Color(0.4f, 0.4f, 0.55f), new Vector2(80, 90));
+        var menuBtn = MakeButton(actionRow.transform, "MENU",
+            new Color(0.4f, 0.4f, 0.55f), new Vector2(130, 90));
         menuBtn.onClick.AddListener(() =>
             UnityEngine.SceneManagement.SceneManager.LoadScene("GamesMenu"));
-        GetTMP(menuBtn).fontSize = 38;
+        GetTMP(menuBtn).fontSize = 28;
 
         // ── Win Popup ─────────────────────────────────────────────────────
         winPopup = BuildPopup(cvGO.transform, "WinPopup",
             new Color(0.10f, 0.65f, 0.25f),
-            "⭐ You Win! ⭐",
+            "You Win!",
             new Color(1f, 0.95f, 0.3f));
 
-        var winNextBtn = MakeButton(winPopup.transform, "Next Level ▶",
+        var winNextBtn = MakeButton(winPopup.transform, "Next Level",
             new Color(0.9f, 0.75f, 0.0f), new Vector2(280, 85), "NextBtn");
         winNextBtn.onClick.AddListener(() => gm.NextLevel());
 
-        var winRetryBtn = MakeButton(winPopup.transform, "↺ Play Again",
+        var winRetryBtn = MakeButton(winPopup.transform, "Play Again",
             new Color(0.3f, 0.5f, 0.9f), new Vector2(240, 75));
         winRetryBtn.onClick.AddListener(() => gm.RestartLevel());
 
@@ -264,14 +264,14 @@ public class UIManager : MonoBehaviour
         // ── Retry Popup ───────────────────────────────────────────────────
         retryPopup = BuildPopup(cvGO.transform, "RetryPopup",
             new Color(0.75f, 0.18f, 0.15f),
-            "Oops! Try Again 🔄",
+            "Oops! Try Again",
             Color.white);
 
-        var retryBtn = MakeButton(retryPopup.transform, "↺ Retry",
+        var retryBtn = MakeButton(retryPopup.transform, "Retry",
             new Color(0.95f, 0.55f, 0.1f), new Vector2(260, 85));
         retryBtn.onClick.AddListener(() => gm.RestartLevel());
 
-        var menuBtn2 = MakeButton(retryPopup.transform, "🏠 Menu",
+        var menuBtn2 = MakeButton(retryPopup.transform, "Menu",
             new Color(0.4f, 0.4f, 0.55f), new Vector2(220, 75));
         menuBtn2.onClick.AddListener(() =>
             UnityEngine.SceneManagement.SceneManager.LoadScene("GamesMenu"));
