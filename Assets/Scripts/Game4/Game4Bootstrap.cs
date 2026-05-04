@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem.UI;          // New Input System UI module
 
 [DefaultExecutionOrder(-100)]
 public class Game4Bootstrap : MonoBehaviour
@@ -45,12 +46,15 @@ public class Game4Bootstrap : MonoBehaviour
         cam.backgroundColor  = new Color(0.40f, 0.78f, 0.96f);
     }
 
-    // Buttons need an EventSystem in the scene — create one if missing
+    // The project uses New Input System (activeInputHandler = 1).
+    // StandaloneInputModule only handles the legacy input — buttons stay deaf.
+    // InputSystemUIInputModule is the correct module for com.unity.inputsystem.
     static void EnsureEventSystem()
     {
         if (FindFirstObjectByType<EventSystem>() != null) return;
+
         var go = new GameObject("EventSystem");
         go.AddComponent<EventSystem>();
-        go.AddComponent<StandaloneInputModule>();
+        go.AddComponent<InputSystemUIInputModule>();   // ← New Input System UI
     }
 }
