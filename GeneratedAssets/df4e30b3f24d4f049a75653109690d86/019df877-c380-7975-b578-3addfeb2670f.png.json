@@ -1,0 +1,28 @@
+{
+    "asset": "df4e30b3f24d4f049a75653109690d86",
+    "fileName": "019df877-c380-7975-b578-3addfeb2670f.png",
+    "prompt": "A straight water pipe piece for a puzzle game, top-down view, cute cartoon style, bright colors, kindergarten friendly, thick blue outline, clean white highlight. 2D sprite.",
+    "negativePrompt": "",
+    "model": "gemini-3.1-flash",
+    "modelName": "Gemini 3.1 Nano Banana 2",
+    "customSeed": -1,
+    "w3CTraceId": "",
+    "feedback": 0,
+    "refinementMode": "Generation",
+    "pixelateTargetSize": 0,
+    "pixelateKeepImageSize": false,
+    "pixelatePixelBlockSize": 0,
+    "pixelatePixelGridSize": 0,
+    "pixelateMode": 0,
+    "pixelateOutlineThickness": 0,
+    "doodles": {
+        "m_Items": []
+    },
+    "upscaleFactor": 0,
+    "dimensions": {
+        "width": 1024,
+        "height": 1024
+    },
+    "spriteSheet": false,
+    "duration": 0.0
+}
