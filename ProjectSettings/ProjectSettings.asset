@@ -720,11 +720,11 @@ PlayerSettings:
   captureStartupLogs: {}
   activeInputHandler: 1
   windowsGamepadBackendHint: 0
-  cloudProjectId: cb5d1aa9-d2ae-4153-8fd7-100697d644ef
+  cloudProjectId: 6cce108b-1df7-42c9-9be2-f5630c0c3bb1
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
   projectName: Kinder
-  organizationId: nigmatovdev
+  organizationId: itsumchik
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   hmiLoadingImage: {fileID: 0}

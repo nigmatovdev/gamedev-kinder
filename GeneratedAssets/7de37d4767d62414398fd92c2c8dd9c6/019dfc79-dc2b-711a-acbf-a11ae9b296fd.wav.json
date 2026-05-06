@@ -1,0 +1,15 @@
+{
+    "asset": "7de37d4767d62414398fd92c2c8dd9c6",
+    "fileName": "019dfc79-dc2b-711a-acbf-a11ae9b296fd.wav",
+    "prompt": "cute happy ding chime success magic sparkle kid game sound effect",
+    "negativePrompt": "",
+    "model": "elevenlabs-sound-effects-v2",
+    "modelName": "ElevenLabs Sound Effects V2",
+    "customSeed": -1,
+    "w3CTraceId": "",
+    "feedback": 0,
+    "duration": 2.0,
+    "autoTrim": false,
+    "hasReference": false,
+    "voice": ""
+}

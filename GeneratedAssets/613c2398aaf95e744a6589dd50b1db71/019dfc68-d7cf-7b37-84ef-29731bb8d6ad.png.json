@@ -1,0 +1,28 @@
+{
+    "asset": "613c2398aaf95e744a6589dd50b1db71",
+    "fileName": "019dfc68-d7cf-7b37-84ef-29731bb8d6ad.png",
+    "prompt": "Stylized cartoon sunny forest clearing with a soft grassy meadow, kid-friendly game background, high quality, 2D, vibrant colors, soft lighting, no characters",
+    "negativePrompt": "",
+    "model": "gemini-3.1-flash",
+    "modelName": "Gemini 3.1 Nano Banana 2",
+    "customSeed": -1,
+    "w3CTraceId": "",
+    "feedback": 0,
+    "refinementMode": "Generation",
+    "pixelateTargetSize": 0,
+    "pixelateKeepImageSize": false,
+    "pixelatePixelBlockSize": 0,
+    "pixelatePixelGridSize": 0,
+    "pixelateMode": 0,
+    "pixelateOutlineThickness": 0,
+    "doodles": {
+        "m_Items": []
+    },
+    "upscaleFactor": 0,
+    "dimensions": {
+        "width": 1024,
+        "height": 1024
+    },
+    "spriteSheet": false,
+    "duration": 0.0
+}

@@ -1,0 +1,15 @@
+{
+    "asset": "87aedf823c3bed9428342a74557fdd74",
+    "fileName": "019dfc79-e60d-7d32-a4b3-efae5a241ea4.wav",
+    "prompt": "short fail buzz negative low tone game over kid game sound effect",
+    "negativePrompt": "",
+    "model": "elevenlabs-sound-effects-v2",
+    "modelName": "ElevenLabs Sound Effects V2",
+    "customSeed": -1,
+    "w3CTraceId": "",
+    "feedback": 0,
+    "duration": 2.0,
+    "autoTrim": false,
+    "hasReference": false,
+    "voice": ""
+}
