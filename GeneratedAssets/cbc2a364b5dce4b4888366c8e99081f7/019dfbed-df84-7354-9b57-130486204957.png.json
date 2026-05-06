@@ -1,0 +1,28 @@
+{
+    "asset": "cbc2a364b5dce4b4888366c8e99081f7",
+    "fileName": "019dfbed-df84-7354-9b57-130486204957.png",
+    "prompt": "A cartoon style blue T-junction pipe icon for a puzzle game, top-down view, simple clean lines, isolated on white background, matching a straight pipe style. The pipe has three openings: top, right, and bottom.",
+    "negativePrompt": "",
+    "model": "gemini-3.1-flash",
+    "modelName": "Gemini 3.1 Nano Banana 2",
+    "customSeed": -1,
+    "w3CTraceId": "",
+    "feedback": 0,
+    "refinementMode": "Generation",
+    "pixelateTargetSize": 0,
+    "pixelateKeepImageSize": false,
+    "pixelatePixelBlockSize": 0,
+    "pixelatePixelGridSize": 0,
+    "pixelateMode": 0,
+    "pixelateOutlineThickness": 0,
+    "doodles": {
+        "m_Items": []
+    },
+    "upscaleFactor": 0,
+    "dimensions": {
+        "width": 1024,
+        "height": 1024
+    },
+    "spriteSheet": false,
+    "duration": 0.0
+}

@@ -1,0 +1,28 @@
+{
+    "asset": "2b6f6373ebb3d4d448c392d4e86f0df8",
+    "fileName": "019dfc14-6bbe-7998-9c7b-1ba93743a491.png",
+    "prompt": "A scenic, bright, kid-friendly cartoon landscape background for a 2D game. Sunny day, rolling green hills, blue sky with fluffy clouds. 2D flat vector style.",
+    "negativePrompt": "",
+    "model": "gemini-3.1-flash",
+    "modelName": "Gemini 3.1 Nano Banana 2",
+    "customSeed": -1,
+    "w3CTraceId": "",
+    "feedback": 0,
+    "refinementMode": "Generation",
+    "pixelateTargetSize": 0,
+    "pixelateKeepImageSize": false,
+    "pixelatePixelBlockSize": 0,
+    "pixelatePixelGridSize": 0,
+    "pixelateMode": 0,
+    "pixelateOutlineThickness": 0,
+    "doodles": {
+        "m_Items": []
+    },
+    "upscaleFactor": 0,
+    "dimensions": {
+        "width": 1024,
+        "height": 1024
+    },
+    "spriteSheet": false,
+    "duration": 0.0
+}

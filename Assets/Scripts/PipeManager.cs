@@ -14,6 +14,7 @@ namespace PipePuzzle
         
         public Sprite straightSprite;
         public Sprite cornerSprite;
+        public Sprite tJunctionSprite;
         
         public UnityEngine.UI.Image sourceImage;
         public UnityEngine.UI.Image plantImage;
@@ -35,11 +36,38 @@ namespace PipePuzzle
         {
             Debug.Log("Starting Level: " + level);
             currentLevel = level;
+            
+            // Randomize vertical positions for source and plant
+            if (level > 0)
+            {
+                sourcePos = new Vector2Int(0, Random.Range(0, rows));
+                plantPos = new Vector2Int(4, Random.Range(0, rows));
+            }
+            else
+            {
+                sourcePos = new Vector2Int(0, 2);
+                plantPos = new Vector2Int(4, 2);
+            }
+
+            UpdateVisualPositions();
             GenerateLevel(level);
         }
 
-        void GenerateLevel(int level)
+        private void UpdateVisualPositions()
         {
+            float stride = 155f; // cellSize(150) + spacing(5)
+            
+            // sourcePos.y is grid row. row 0 is top, row 4 is bottom.
+            // UI Y=0 is middle. row 2 is UI Y=0.
+            float sourceY = (2 - sourcePos.y) * stride;
+            sourceImage.rectTransform.anchoredPosition = new Vector2(-460f, sourceY);
+
+            float plantY = (2 - plantPos.y) * stride;
+            plantImage.rectTransform.anchoredPosition = new Vector2(460f, plantY);
+        }
+
+        void GenerateLevel(int level)
+{
             foreach (Transform child in gridParent)
             {
                 Destroy(child.gameObject);
@@ -55,13 +83,34 @@ namespace PipePuzzle
                     go.name = "Pipe_" + x + "_" + y;
                     PipePiece piece = go.GetComponent<PipePiece>();
                     
-                    PipePiece.PipeType type = PipePiece.PipeType.Straight;
-                    if (level == 0) type = PipePiece.PipeType.Straight;
-                    else if (level == 1) type = (x + y) % 2 == 0 ? PipePiece.PipeType.Corner : PipePiece.PipeType.Straight;
-                    else type = Random.value > 0.65f ? PipePiece.PipeType.Corner : PipePiece.PipeType.Straight;
+                    PipePiece.PipeType type;
+                    Vector2Int pos = new Vector2Int(x, y);
+
+                    // Ensure source and plant positions always have Straight pipes to connect properly
+                    if (pos == sourcePos || pos == plantPos)
+                    {
+                        type = PipePiece.PipeType.Straight;
+                    }
+                    else if (level == 0)
+                    {
+                        type = PipePiece.PipeType.Straight;
+                    }
+                    else
+                    {
+                        // Higher chance for TJunction and Straight to make it easier to connect
+                        float rand = Random.value;
+                        if (rand < 0.45f) type = PipePiece.PipeType.Straight;
+                        else if (rand < 0.75f) type = PipePiece.PipeType.Corner;
+                        else type = PipePiece.PipeType.TJunction;
+                    }
 
                     piece.Init(type, Random.Range(0, 4), this);
-go.GetComponent<UnityEngine.UI.Image>().sprite = (type == PipePiece.PipeType.Straight) ? straightSprite : cornerSprite;
+                    
+                    Sprite spriteToUse = straightSprite;
+                    if (type == PipePiece.PipeType.Corner) spriteToUse = cornerSprite;
+                    else if (type == PipePiece.PipeType.TJunction) spriteToUse = tJunctionSprite;
+                    
+                    go.GetComponent<UnityEngine.UI.Image>().sprite = spriteToUse;
                     
                     UnityEngine.UI.Button btn = go.GetComponent<UnityEngine.UI.Button>();
                     if (btn == null) btn = go.AddComponent<UnityEngine.UI.Button>();

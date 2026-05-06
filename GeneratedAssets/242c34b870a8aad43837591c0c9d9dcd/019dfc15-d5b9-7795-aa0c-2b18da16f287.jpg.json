@@ -1,0 +1,28 @@
+{
+    "asset": "242c34b870a8aad43837591c0c9d9dcd",
+    "fileName": "019dfc15-d5b9-7795-aa0c-2b18da16f287.jpg",
+    "prompt": "A vibrant, rounded UI button for a cartoon game. Bright green color with a subtle glow. Flat vector style. Isolated on white background.",
+    "negativePrompt": "",
+    "model": "game-ui-essentials-2",
+    "modelName": "Game UI Essentials 2.0",
+    "customSeed": -1,
+    "w3CTraceId": "",
+    "feedback": 0,
+    "refinementMode": "Generation",
+    "pixelateTargetSize": 0,
+    "pixelateKeepImageSize": false,
+    "pixelatePixelBlockSize": 0,
+    "pixelatePixelGridSize": 0,
+    "pixelateMode": 0,
+    "pixelateOutlineThickness": 0,
+    "doodles": {
+        "m_Items": []
+    },
+    "upscaleFactor": 0,
+    "dimensions": {
+        "width": 2048,
+        "height": 2048
+    },
+    "spriteSheet": false,
+    "duration": 0.0
+}

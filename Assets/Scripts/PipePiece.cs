@@ -5,7 +5,7 @@ namespace PipePuzzle
 
     public class PipePiece : MonoBehaviour
     {
-        public enum PipeType { Straight, Corner }
+        public enum PipeType { Straight, Corner, TJunction }
         public PipeType pipeType;
         
         // Connections: 0 = Top, 1 = Right, 2 = Bottom, 3 = Left
@@ -42,6 +42,13 @@ namespace PipePuzzle
                 // Sprite is Top-Right corner by default
                 connections[0] = true;
                 connections[1] = true;
+            }
+            else if (pipeType == PipeType.TJunction)
+            {
+                // T-Junction: Top, Right, Bottom
+                connections[0] = true;
+                connections[1] = true;
+                connections[2] = true;
             }
         }
 

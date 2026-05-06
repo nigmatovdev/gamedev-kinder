@@ -1,0 +1,28 @@
+{
+    "asset": "a7f1aa44f853a0442aebf8ac0f99d522",
+    "fileName": "019dfc14-d9b5-7fe6-83e4-f62a7c40cbb0.png",
+    "prompt": "Ground tile for a 2D platformer, cartoon style. Top part is grass, bottom part is dirt. Flat vector style. Isolated on white background.",
+    "negativePrompt": "",
+    "model": "gemini-3.1-flash",
+    "modelName": "Gemini 3.1 Nano Banana 2",
+    "customSeed": -1,
+    "w3CTraceId": "",
+    "feedback": 0,
+    "refinementMode": "Generation",
+    "pixelateTargetSize": 0,
+    "pixelateKeepImageSize": false,
+    "pixelatePixelBlockSize": 0,
+    "pixelatePixelGridSize": 0,
+    "pixelateMode": 0,
+    "pixelateOutlineThickness": 0,
+    "doodles": {
+        "m_Items": []
+    },
+    "upscaleFactor": 0,
+    "dimensions": {
+        "width": 1024,
+        "height": 1024
+    },
+    "spriteSheet": false,
+    "duration": 0.0
+}
