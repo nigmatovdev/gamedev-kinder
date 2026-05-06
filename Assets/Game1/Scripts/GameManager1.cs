@@ -1,152 +1,60 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
+
+using UnityEngine;
+using UnityEngine.UI;
 using System.Collections.Generic;
-using System.Linq;
 
-namespace Game1
-{
-    public class GameManager1 : MonoBehaviour
-    {
-        public static GameManager1 Instance { get; private set; }
+namespace Game1 { // This starts the namespace
+    public class GameManager1 : MonoBehaviour {
+         [Header("UI References")]
+    public Image animalDisplay; 
+    public DraggableFood[] foodTraySlots; 
 
-        [Header("UI References")]
-        public Image animalDisplay;
-        public Transform foodTray;
-        public Text scoreText;
-        public GameObject gameOverPanel;
+    [Header("Game Data")]
+    public List<AnimalData> allAnimals; 
+    public Sprite[] allFoodSprites; 
 
-        [Header("Prefabs")]
-        public GameObject foodItemPrefab;
+    private FoodType correctFoodForThisRound;
 
-        [Header("Game Data")]
-        public List<AnimalData> allAnimals;
-        public Sprite[] allFoodSprites;
+    void Start() {
+        StartNewRandomRound();
+    }
 
-        [Header("Audio")]
-        public AudioSource audioSource;
-        public AudioClip correctClip;
-        public AudioClip wrongClip;
+    public void StartNewRandomRound() {
+        int randomAnimalIndex = Random.Range(0, allAnimals.Count);
+        AnimalData chosenAnimal = allAnimals[randomAnimalIndex];
 
-        private FoodType currentWinningFood;
-        private int score = 0;
+        animalDisplay.sprite = chosenAnimal.animalSprite;
+        correctFoodForThisRound = chosenAnimal.correctFood;
 
-        private void Awake()
-        {
-            if (Instance == null) Instance = this;
-            else Destroy(gameObject);
+        List<FoodType> foodsToDisplay = new List<FoodType>();
+        foodsToDisplay.Add(correctFoodForThisRound);
 
-            if (audioSource == null) audioSource = GetComponent<AudioSource>();
-            if (audioSource == null) audioSource = gameObject.AddComponent<AudioSource>();
-        }
-
-        private void Start()
-        {
-            score = 0;
-            UpdateScoreUI();
-            if (gameOverPanel != null) gameOverPanel.SetActive(false);
-            SetupLevel();
-        }
-
-        public void SetupLevel()
-        {
-            if (allAnimals == null || allAnimals.Count == 0)
-            {
-                Debug.LogError("No animal data assigned to GameManager1!");
-                return;
-            }
-
-            // Clear previous food items
-            foreach (Transform child in foodTray)
-            {
-                Destroy(child.gameObject);
-            }
-
-            // Pick a random animal
-            AnimalData selectedAnimal = allAnimals[Random.Range(0, allAnimals.Count)];
-            animalDisplay.sprite = selectedAnimal.animalSprite;
-            currentWinningFood = selectedAnimal.correctFood;
-
-            // Prepare foods
-            List<FoodType> selectedFoods = new List<FoodType>();
-            selectedFoods.Add(currentWinningFood);
-
-            List<FoodType> possibleWrongFoods = System.Enum.GetValues(typeof(FoodType))
-                .Cast<FoodType>()
-                .Where(f => f != currentWinningFood)
-                .ToList();
-
-            for (int i = 0; i < 3; i++)
-            {
-                if (possibleWrongFoods.Count > 0)
-                {
-                    int randomIndex = Random.Range(0, possibleWrongFoods.Count);
-                    selectedFoods.Add(possibleWrongFoods[randomIndex]);
-                    possibleWrongFoods.RemoveAt(randomIndex);
-                }
-            }
-
-            Shuffle(selectedFoods);
-
-            // Instantiate and setup food items
-            foreach (var foodType in selectedFoods)
-            {
-                GameObject foodObj = Instantiate(foodItemPrefab, foodTray);
-                DraggableFood draggable = foodObj.GetComponent<DraggableFood>();
-                if (draggable != null)
-                {
-                    draggable.SetFood(foodType, allFoodSprites[(int)foodType]);
-                }
+        while (foodsToDisplay.Count < 4) {
+            FoodType randomFood = (FoodType)Random.Range(0, 6);
+            if (!foodsToDisplay.Contains(randomFood)) {
+                foodsToDisplay.Add(randomFood);
             }
         }
 
-        public bool CheckFood(FoodType droppedFood)
-        {
-            if (droppedFood == currentWinningFood)
-            {
-                score++;
-                UpdateScoreUI();
-                if (audioSource != null && correctClip != null) audioSource.PlayOneShot(correctClip);
-                Invoke(nameof(SetupLevel), 1f);
-                return true;
-            }
-            else
-            {
-                if (audioSource != null && wrongClip != null) audioSource.PlayOneShot(wrongClip);
-                TriggerGameOver();
-                return false;
-            }
+        for (int i = 0; i < foodsToDisplay.Count; i++) {
+            FoodType temp = foodsToDisplay[i];
+            int randomIndex = Random.Range(i, foodsToDisplay.Count);
+            foodsToDisplay[i] = foodsToDisplay[randomIndex];
+            foodsToDisplay[randomIndex] = temp;
         }
 
-        private void UpdateScoreUI()
-        {
-            if (scoreText != null) scoreText.text = "Score: " + score;
-        }
-
-        private void TriggerGameOver()
-        {
-            if (gameOverPanel != null) gameOverPanel.SetActive(true);
-        }
-
-        public void RestartGame()
-        {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        }
-
-        public void GoToMainMenu()
-        {
-            SceneManager.LoadScene("MainMenu");
-        }
-
-        private void Shuffle<T>(List<T> list)
-        {
-            for (int i = 0; i < list.Count; i++)
-            {
-                T temp = list[i];
-                int randomIndex = Random.Range(i, list.Count);
-                list[i] = list[randomIndex];
-                list[randomIndex] = temp;
-            }
+        for (int i = 0; i < foodTraySlots.Length; i++) {
+            FoodType assignedType = foodsToDisplay[i];
+            foodTraySlots[i].foodType = assignedType;
+            foodTraySlots[i].GetComponent<Image>().sprite = allFoodSprites[(int)assignedType];
+            foodTraySlots[i].gameObject.SetActive(true);
+            foodTraySlots[i].ReturnToTray();
+            Image slotImage = foodTraySlots[i].GetComponent<Image>();
+            slotImage.sprite = allFoodSprites[(int)type];
         }
     }
-}
+    }
+} // This ends the namespace

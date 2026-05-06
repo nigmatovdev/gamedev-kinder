@@ -1,29 +1,21 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace Game1
+public class AnimalDropZone : MonoBehaviour, IDropHandler
 {
-    public class AnimalDropZone : MonoBehaviour, IDropHandler
+    public GameManager gameManager;
+
+    public void OnDrop(PointerEventData eventData)
     {
-        public void OnDrop(PointerEventData eventData)
+        // Check if the dropped object has the DraggableFood script
+        if (eventData.pointerDrag != null)
         {
-            if (eventData.pointerDrag != null)
+            DraggableFood droppedFood = eventData.pointerDrag.GetComponent<DraggableFood>();
+            
+            if (droppedFood != null)
             {
-                DraggableFood droppedFood = eventData.pointerDrag.GetComponent<DraggableFood>();
-                if (droppedFood != null)
-                {
-                    if (GameManager1.Instance.CheckFood(droppedFood.foodType))
-                    {
-                        Debug.Log("Correct Food!");
-                        Destroy(droppedFood.gameObject);
-                    }
-                    else
-                    {
-                        Debug.Log("Wrong Food! Game Over.");
-                        // The food will remain where it was dropped (or return if we handle it in OnEndDrag)
-                        // But CheckFood triggers the Game Over panel.
-                    }
-                }
+                // Send the food type to the GameManager to check if it's correct
+                gameManager.CheckMatch(droppedFood);
             }
         }
     }
