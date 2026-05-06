@@ -17,6 +17,14 @@ namespace BridgeBuilder
         {
             isDriving = true;
             if (rb) rb.bodyType = RigidbodyType2D.Dynamic;
+            
+            // Ensure sprite faces right if speed is positive
+            var sr = GetComponent<SpriteRenderer>();
+            if (sr != null)
+            {
+                sr.flipX = speed < 0; // If speed is positive, flipX is false (assuming original faces right)
+                // If original faces left, then sr.flipX = speed > 0;
+            }
         }
 
         void FixedUpdate()

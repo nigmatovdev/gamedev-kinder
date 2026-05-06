@@ -1,0 +1,28 @@
+{
+    "asset": "70c5deceb61b3c84daa147850c94eb1b",
+    "fileName": "019dfc30-316d-7152-b81b-a896e1dfbf52.png",
+    "prompt": "A cute red cartoon car for a kids game, side view, facing right. Clean flat vector style, isolated on white background. Bright colors. No shadows.",
+    "negativePrompt": "",
+    "model": "gemini-3.1-flash",
+    "modelName": "Gemini 3.1 Nano Banana 2",
+    "customSeed": -1,
+    "w3CTraceId": "",
+    "feedback": 0,
+    "refinementMode": "Generation",
+    "pixelateTargetSize": 0,
+    "pixelateKeepImageSize": false,
+    "pixelatePixelBlockSize": 0,
+    "pixelatePixelGridSize": 0,
+    "pixelateMode": 0,
+    "pixelateOutlineThickness": 0,
+    "doodles": {
+        "m_Items": []
+    },
+    "upscaleFactor": 0,
+    "dimensions": {
+        "width": 1024,
+        "height": 1024
+    },
+    "spriteSheet": false,
+    "duration": 0.0
+}

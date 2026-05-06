@@ -33,7 +33,10 @@ namespace BridgeBuilder
                 piece.SetPhysics(true);
             }
 
-            if (currentCar) Destroy(currentCar);
+            // Destroy any existing cars in the scene
+            var existingCars = Object.FindObjectsByType<CarController>(FindObjectsSortMode.None);
+            foreach (var c in existingCars) Destroy(c.gameObject);
+
             currentCar = Instantiate(carPrefab, carStartPoint.position, Quaternion.identity);
             currentCar.GetComponent<CarController>().StartDriving();
         }
