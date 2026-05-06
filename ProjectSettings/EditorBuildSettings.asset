@@ -5,42 +5,45 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/MainMenu.unity
     guid: 2cda990e2423bbf4892e6590ba056729
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/GamesMenu.unity
     guid: 581fcc09706105a4a83e586d4859bb38
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Game10.unity
     guid: 67589a97125819b4ba778909269d7aa4
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Game9.unity
     guid: e4135f762a2cf65419526cb8ffbfd2f7
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Game8.unity
     guid: 51a649b04d82fd4419c60790d1cf01c5
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Game7.unity
     guid: 5ceea7b4228699a4f8c5e3936584c0bb
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Game6.unity
     guid: 6a907fbff6719894ca9b26f8201ab813
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Game5.unity
     guid: 4f7a44e343cc46746ad642a98d252530
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Game4.unity
     guid: 8d9887f64a8795f41b3d1b40e8a08a99
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Game3.unity
     guid: c149967a11e7b6d4f99d6649613b7d85
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Game2.unity
     guid: a9a6854de038fbf44b3e3a6a78cf502f
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Game1.unity
     guid: 400963bd88c19c04cac5cd087720add9
+  - enabled: 1
+    path: Assets/Game1/Scenes/Game 1.unity
+    guid: dd32fd3716093a74dabdbe6c5cb48cc4
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 3590b91b4603b465dbb4216d601bff33, type: 3}
   m_UseUCBPForAssetBundles: 0
